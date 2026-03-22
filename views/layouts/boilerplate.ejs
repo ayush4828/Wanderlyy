@@ -14,13 +14,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+    <style>
+        body { margin: 0; padding: 0; }
+        #map {     height: 400px; 
+    width: 100%;   
+    border-radius: 12px; 
+    margin-top: 20px; 
+ }
+    </style>
 </head>
 <body>
 
  <%- include("../includes/navbar.ejs") %>
 
     <div class="container">
+        <%- include("../includes/flash.ejs") %>
         <%- body %>
     </div>
 

@@ -1,4 +1,359 @@
 
+
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  .listings-container {
+    padding: 24px 40px;
+  }
+
+  .listings-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: #222;
+  }
+
+  .listing-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .listing-card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    background: #fff;
+  }
+
+  .listing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .listing-card .img-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .listing-card .card-img-top {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px;
+    transition: transform 0.4s ease;
+  }
+
+  .listing-card:hover .card-img-top {
+    transform: scale(1.04);
+  }
+
+  .listing-card .heart-btn {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: white;
+    cursor: pointer;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .listing-card .heart-btn:hover {
+    transform: scale(1.2);
+    color: #ff385c;
+  }
+
+  .listing-card .card-body {
+    padding: 10px 4px 6px 4px;
+  }
+
+  .listing-card .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .listing-card .card-price {
+    font-size: 0.95rem;
+    color: #444;
+  }
+
+  .listing-card .card-price span {
+    font-weight: 600;
+    color: #222;
+  }
+
+  .listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+  }
+  /* ── Outer bar: icons + tax toggle side by side ── */
+  #filters-bar {
+    display: flex;
+    align-items: center;
+    padding: 0 2.5rem;
+  }
+
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tax-toggle {
+    flex-shrink: 0;
+    margin-left: 1.5rem;
+    white-space: nowrap;
+  }
+
+  .filter {
+    text-align: center;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .filter p {
+    font-size: 0.8rem !important
+  }
+
+  .tax-info{
+    display: none;
+  }
+
+  /* Active state for markers */
+  .filter.active {
+    opacity: 1;
+    border-bottom: 2px solid #fe424d;
+  }
+
+  .filter.active p, 
+  .filter.active i {
+    color: #fe424d;
+    font-weight: 600;
+  }
+
+  .tax-toggle{
+    border: 1px solid rgb(152, 150, 150);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    
+  }
+
+
+  /* ── Mobile: horizontal scroll ── */
+  @media (max-width: 768px) {
+    #filters-bar {
+      padding: 0 1rem;
+    }
+    #filters {
+      margin-left: 1rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;          /* Firefox */
+    }
+    #filters::-webkit-scrollbar {
+      display: none;                  /* Chrome / Safari */
+    }
+    .filter {
+      margin-right: 1.4rem;
+      margin-top: 1.2rem;
+    }
+  }
+</style>
+
+   
+<div id="filters-bar">
+  <div id="filters">
+    <div class="filter <%= selectedCategory === 'Trending' ? 'active' : '' %>" data-category="Trending" onclick="filterCategory('Trending')">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </div>
+    
+    <div class="filter <%= selectedCategory === 'Rooms' ? 'active' : '' %>" data-category="Rooms" onclick="filterCategory('Rooms')">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </div>
+    <div class="filter <%= selectedCategory === 'Iconic City' ? 'active' : '' %>" data-category="Iconic City" onclick="filterCategory('Iconic City')">
+      <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Iconic City</p>
+    </div>
+    <div class="filter <%= selectedCategory === 'Mountains' ? 'active' : '' %>" data-category="Mountains" onclick="filterCategory('Mountains')">
+      <div><i class="fa-solid fa-mountain"></i></div>
+      <p>Mountains</p>
+    </div>
+    <div class="filter <%= selectedCategory === 'Castles' ? 'active' : '' %>" data-category="Castles" onclick="filterCategory('Castles')">
+      <div><i class="fa-brands fa-fort-awesome"></i></div>
+      <p>Castles</p>
+    </div>
+    <div class="filter <%= selectedCategory === 'Amazing Pools' ? 'active' : '' %>" data-category="Amazing Pools" onclick="filterCategory('Amazing Pools')">
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Amazing Pools</p>
+    </div>
+    <div class="filter <%= selectedCategory === 'Camping' ? 'active' : '' %>" data-category="Camping" onclick="filterCategory('Camping')">
+      <div><i class="fa-solid fa-campground"></i></div>
+      <p>Camping</p>
+    </div>
+    <div class="filter <%= selectedCategory === 'Farms' ? 'active' : '' %>" data-category="Farms" onclick="filterCategory('Farms')">
+      <div><i class="fa-solid fa-cow"></i></div>
+      <p>Farms</p>
+    </div>
+    <div class="filter <%= selectedCategory === 'Arctic' ? 'active' : '' %>" data-category="Arctic" onclick="filterCategory('Arctic')">
+      <div><i class="fa-solid fa-igloo"></i></div>
+      <p>Arctic</p>
+    </div>
+       <div class="filter <%= selectedCategory === 'Mansion' ? 'active' : '' %>" data-category="Mansion" onclick="filterCategory('Mansion')">
+      <div> <i class="fa-solid fa-hotel"></i></div>
+      <p>Mansion</p>
+    </div>
+
+  </div>
+
+  <div class="tax-toggle">
+    <div class="form-check-reverse form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+      <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+    </div>
+  </div>
+</div>
+
+<div class="listings-container">
+  <!-- <h1>All Listings</h1> -->
+
+  <div class="listings-grid">
+    <% for(listing of allListings) { %>
+      <a href="/listings/<%= listing._id %>" class="listing-link">
+        <div class="listing-card">
+          <div class="img-wrapper">
+            <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
+            <!-- <button class="heart-btn" onclick="event.preventDefault()">
+              <i class="fa-regular fa-heart"></i>
+            </button> -->
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"><%= listing.title %></h5>
+            <p class="card-price">&#8377; <span><%= listing.price.toLocaleString("en-IN") %></span>/Night
+            <i class="tax-info">&nbsp; &nbsp;  + 18% GST</i>
+            </p>
+            
+          </div>
+        </div>
+      </a>
+    <% } %>
+  </div>
+</div>
+
+
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click" , ()=>{
+    let taxinfo = document.getElementsByClassName("tax-info");
+    
+    for(info of taxinfo){
+      if(info.style.display != "inline"){
+      info.style.display = "inline"
+      }
+      else{
+        info.style.display = "none"
+      }
+    }
+  })
+
+  function filterCategory(category){
+        window.location.href = `/listings?category=${category}`;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <% layout("/layouts/boilerplate.ejs") %>
 <body>
 
@@ -21,4 +376,6 @@
       <%}%>
       </div>
 
-</body>
+</body> -->
+
+

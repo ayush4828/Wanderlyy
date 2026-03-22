@@ -5,7 +5,7 @@
 
   <h1> Edit Listing </h1>
 
-<form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
+<form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
 
 
             
@@ -27,10 +27,31 @@
 </div>
 
 <div class="mb-3">
-         <label for="image" class="form-label">Imgage - URL</label>
-         <input type="text" name="listing[image]" class="form-control" value="<%=listing.image%>">
+    Original Listing Image <br>    
+   <img src="<%= listing.image.url %>" alt="listing_image" style="height: 250px; width: 250px; object-fit: cover; border-radius: 10px;">
 </div>
 
+<div class="mb-3">
+         <label for="image" class="form-label">Upload New Image</label>
+         <input type="file" name="listing[image]" class="form-control">
+</div>
+
+<div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select name="listing[category]" id="category" class="form-select">
+        <option selected disabled><%=listing.category%></option>
+        <option value="Trending">Trending</option>
+        <option value="Rooms">Rooms</option>
+        <option value="Iconic City">Iconic City</option>
+        <option value="Mountains">Mountains</option>
+        <option value="Castles">Castles</option>
+        <option value="Amazing Pools">Amazing Pools</option>
+        <option value="Camping">Camping</option>
+        <option value="Farms">Farms</option>
+        <option value="Arctic">Arctic</option>
+        <option value="Mansion">Mansion</option>
+    </select>
+</div>
 
 <div class="row">
         <div class="mb-3 col-md-4">

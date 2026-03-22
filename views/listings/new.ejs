@@ -6,7 +6,7 @@
 
     <h1>Create new listing </h1>
 
-    <form action="/listings" method="post" novalidate class="needs-validation">
+    <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
 
 
             
@@ -25,8 +25,26 @@
 </div>
 
 <div class="mb-3">
-         <label for="image" class="form-label">Imgage - URL</label>
-         <input type="text" name="listing[image]" placeholder="Enter Image Url/Link" class="form-control">
+         <label for="image" class="form-label">Upload Listing Image</label>
+         <input type="file" name="listing[image]" placeholder="Enter Image Url/Link" class="form-control" required>
+
+</div>
+
+<div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select name="listing[category]" id="category" class="form-select">
+        <option selected disabled>Select Category</option>
+        <option value="Trending">Trending</option>
+        <option value="Rooms">Rooms</option>
+        <option value="Iconic City">Iconic City</option>
+        <option value="Mountains">Mountains</option>
+        <option value="Castles">Castles</option>
+        <option value="Amazing Pools">Amazing Pools</option>
+        <option value="Camping">Camping</option>
+        <option value="Farms">Farms</option>
+        <option value="Arctic">Arctic</option>
+        <option value="Mansion">Mansion</option>
+    </select>
 </div>
 
 
